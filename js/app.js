@@ -11,13 +11,18 @@
     classNames: 'ember-app',
     templateName: 'application'
   });
-/*
+
   App.ApplicationController = Ember.Controller.extend({
     tableSimpleExampleController: Ember.computed(function () {
       return Ember.get('App.TableSimpleExample.TableController').create();
     }).property()
   });
-*/
+
+  App.Router.map(function() {
+    this.resource('simple', { path: '/' });
+  });
+
+  App.TableSimpleExample = Ember.Namespace.create();
 
   App.LazyDataSource = Ember.ArrayProxy.extend({
     objectAt: function(idx) {
