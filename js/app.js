@@ -1,5 +1,5 @@
 // copied most from Addepar
-(function() {
+(function () {
 
   window.App = Ember.Application.create({
     customEvents: {
@@ -13,10 +13,10 @@
   });
 
   App.ApplicationController = Ember.Controller.extend({
-    rChartsController: Ember.computed(function() {
-      return Ember.get('App.rCharts.TableController').create();
+    tableSimpleExampleController: Ember.computed(function () {
+      return Ember.get('App.TableSimpleExample.TableController').create();
     }).property()
-
   });
+
 
 }).call(this);
