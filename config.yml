@@ -1,0 +1,9 @@
+addepartable:
+  css: 
+    - css/ember-table.css
+  jshead: 
+    - js/jquery-1.10.2.js
+    - js/handlebars-1.1.2.js
+    - js/ember-1.4.0.js
+    - js/ember-table.js
+    - js/app.js
