@@ -2,8 +2,12 @@
 #require(devtools)
 #install_github("rCharts","ramnathv",ref="dev")
 
+require(quantmod)
 require(rCharts)
-#make a new rCharts object
+#since ember uses handlebars templates
+#we don't want rCharts and mustache
+#to populate the ember handlebars templates
+#inherit rCharts object to override the render method
 rChartsAddepar <- setRefClass("rChartsAddepar",
   contains = "rCharts",
   methods = list(
@@ -12,13 +16,13 @@ rChartsAddepar <- setRefClass("rChartsAddepar",
     },
     render = function (chartId = NULL, cdn = F, static = T, standalone = F) {
         params$dom <<- chartId %||% params$dom
-        template = read_template(getOption("RCHART_TEMPLATE", templates$page))
+        template = read_file(templates$page)
         assets = Map("c", get_assets(LIB, static = static, cdn = cdn, 
            standalone = standalone), html_assets)
         html = render_template(template, list(params = params, assets = assets, 
                     chartId = params$dom, script = .self$html(params$dom), 
                     CODE = srccode, lib = LIB$name, tObj = tObj, container = container), 
-                    partials = list(chartDiv = templates$chartDiv, afterScript = ""))
+                    partials = list(chartDiv = templates$chartDiv, afterScript = "<script></script>"))
         html = gsub(
           x = html,
           pattern  = "</body>",
@@ -32,7 +36,11 @@ rChartsAddepar <- setRefClass("rChartsAddepar",
   })
 )
 aTable <- rChartsAddepar$new()
-aTable$setLib("http://timelyportfolio.github.io/rCharts_addepar_ember")
+aTable$setLib(
+  "."
+  #"http://timelyportfolio.github.io/rCharts_addepar_ember"
+)
+aTable$templates$page = "rChartAddepar.html"
 aTable$setTemplate(
   afterScript='
         <script type="text/x-handlebars" data-template-name="application">
@@ -56,5 +64,8 @@ aTable$setTemplate(
         </script>  
   '
 )
+sp500 = getSymbols("^GSPC", auto.assign = F)
+sp500.df = data.frame(index(sp500),sp500)
+aTable$params$data = sp500.df
 
 aTable
