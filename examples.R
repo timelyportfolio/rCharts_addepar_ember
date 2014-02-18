@@ -37,10 +37,10 @@ rChartsAddepar <- setRefClass("rChartsAddepar",
 )
 aTable <- rChartsAddepar$new()
 aTable$setLib(
-  "."
-  #"http://timelyportfolio.github.io/rCharts_addepar_ember"
+  #".",
+  "http://timelyportfolio.github.io/rCharts_addepar_ember"
 )
-aTable$templates$page = "./layouts/rChartAddepar.html"
+aTable$templates$page = "http://timelyportfolio.github.io/rCharts_addepar_ember/layouts/rChartAddepar.html"
 aTable$setTemplate(
   afterScript='
         <script type="text/x-handlebars" data-template-name="application">
@@ -76,6 +76,8 @@ colnames(sp500.df) <- c(
   "Adj. Close"
 )
 aTable$params$data = sp500.df
+#hack as is everything else for now
+#to be able to specify column settings
 aTable$params$columns = list(
   Date = list(
     textAlign = 'text-align-left',
