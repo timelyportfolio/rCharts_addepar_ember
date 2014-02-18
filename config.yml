@@ -8,5 +8,6 @@ addepartable:
     - js/jquery.mousewheel.js
     - js/antiscroll.js
     - js/handlebars-1.1.2.js
+    - js/d3.v3.js
     - js/ember-1.4.0.js
     - js/ember-table.js

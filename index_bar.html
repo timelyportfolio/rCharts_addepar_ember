@@ -13,19 +13,51 @@
         <script src="js/antiscroll.js"></script>
         <script src="js/jquery-ui-1.10.1.custom.min.js"></script>
         <script src="js/ember-table.js"></script>
-        <script src="js/app.js"></script>
+        <script src="js/bartable.js"></script>
+
+        <style>
+          /* Ember Table Bar Chart Cells - straight from Addepar example
+          -------------------------------------------------- */
+          .bar-cell {
+            height: 29px !important;
+            display: inline-block;
+            vertical-align: middle;
+          }
+          .blue .bar-cell {
+            background-color: #004358;
+          }
+          .teal .bar-cell {
+            background-color: #1F8A70;
+          }
+          .green .bar-cell {
+            background-color: #BEDB39;
+          }
+          .yellow .bar-cell {
+            background-color: #FFE11A;
+          }
+          .orange .bar-cell {
+            background-color: #FD7400;
+          }
+        </style>
     </head>
     <body>
+        <script type="text/x-handlebars" data-template-name="bar_table">
+          <span class="bar-cell" {{bind-attr style="view.histogramStyle"}}>
+          </span>
+        </script>
+
         <script type="text/x-handlebars" data-template-name="application">
           <div class="col-md-10 col-md-offset-2 left-border main-content-container">
-            <h1>Ember Table <small>Simple</small></h1>
+            <h1>Ember Table <small>Bar</small></h1>
 
             <div class="row">
               <div class="col-md-12">
                 <div class="example-container">
                   <div class="ember-table-example-container" style="height:400px;">
                     {{table-component
+                      hasHeader=true
                       hasFooter=false
+                      rowHeight=30
                       columnsBinding="columns"
                       contentBinding="content"
                     }}

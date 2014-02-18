@@ -1,0 +1,154 @@
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    <link rel='stylesheet' href='./css/ember-table.css'>
+    <link rel='stylesheet' href='./css/bootstrap.min.css'>
+    
+    <script src='./js/jquery-1.10.2.js' type='text/javascript'></script>
+    <script src='./js/jquery-ui-1.10.1.custom.min.js' type='text/javascript'></script>
+    <script src='./js/jquery.mousewheel.js' type='text/javascript'></script>
+    <script src='./js/antiscroll.js' type='text/javascript'></script>
+    <script src='./js/handlebars-1.1.2.js' type='text/javascript'></script>
+    <script src='./js/d3.v3.js' type='text/javascript'></script>
+    <script src='./js/ember-1.4.0.js' type='text/javascript'></script>
+    <script src='./js/ember-table.js' type='text/javascript'></script>
+    
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 800px;
+      height: 400px;
+    }  
+    </style>
+    
+  </head>
+  <body >
+    
+    <!--
+    <div id = 'chart3dc6920423d' class = 'rChart rCharts_addepar_ember'></div>    -->
+
+          <style>
+          /* Ember Table Bar Chart Cells - straight from Addepar example
+          -------------------------------------------------- */
+          .bar-cell {
+            height: 29px !important;
+            display: inline-block;
+            vertical-align: middle;
+          }
+      </style>  
+      <script>
+          // spot to get all the rCharts parameters
+          var params = {"dom":"chart3dc6920423d","width":800,"height":400,"data":{"Hair":["Black","Brown","Red","Blond"],"Brown":[62.962962962963,41.6083916083916,36.6197183098592,5.51181102362205],"Blue":[18.5185185185185,29.3706293706294,23.943661971831,74.0157480314961],"Hazel":[13.8888888888889,18.8811188811189,19.7183098591549,7.8740157480315],"Green":[4.62962962962963,10.1398601398601,19.7183098591549,12.5984251968504]},"id":"chart3dc6920423d"}
+
+          // transform data into array of objects from object of arrays
+          // easy to do with d3, lodash, etc.
+          // but use just javascript for now
+
+          var data= [];
+          params.data[Object.keys(params.data)[0]].forEach(function(d,i){
+            var tempdata = {};
+            Object.keys(params.data).map(function(key) {
+              tempdata[key] = params.data[key][i];
+            })
+            data.push(tempdata);
+          });
+
+          // copied most from Addepar
+
+          window.App = Ember.Application.create({
+            customEvents: {
+              blur: 'blur'
+            }
+          });
+
+          App.BarTableCell = Ember.Table.TableCell.extend({
+            templateName: 'bar_table',
+            //classNameBindings: ['column.color'],
+            barWidth: Ember.computed(function() {
+              var column, row, _ref;
+              _ref = this.getProperties('column', 'row'), column = _ref.column, row = _ref.row;
+              if (!(column && row)) {
+                return 0;
+              }
+              return Math.round(+this.get('cellContent'));
+            }).property('column', 'row', 'cellContent'),
+            color:Ember.computed(function() {
+              var column, row, _ref;
+              _ref = this.getProperties('column', 'row'), column = _ref.column, row = _ref.row;
+              if (!(column && row)) {
+                return 'auto';
+              }
+              return column.color;
+            }).property('column', 'row'),
+            histogramStyle: Ember.computed(function() {
+              return "width: " + (this.get('barWidth')) + "%;" + "background-color:" + (this.get('color')) + ";";
+            }).property('barWidth','color')
+          });
+
+
+
+          App.ApplicationController = Ember.Controller.extend({
+            columns: Ember.computed(function() {
+              var colors, column1, columns;
+              colors = d3.scale.category10();
+              column1 = Ember.Table.ColumnDefinition.create({
+                columnWidth: 50,
+                headerCellName: Object.keys(data[0])[0],
+                contentPath: Object.keys(data[0])[0]
+              });
+              columns = Object.keys(data[0]).splice(1,Object.keys(data[0]).length).map(function(key, index) {
+                return Ember.Table.ColumnDefinition.create({
+                  color: colors(key),
+                  headerCellName: key,
+                  tableCellViewClass: 'App.BarTableCell',
+                  contentPath: key
+                });
+              });
+              columns.unshift(column1);
+              return columns;
+            }),
+            content: data
+          });
+
+
+
+
+        </script>
+
+        
+    
+    <script></script>    
+  
+  <script type="text/x-handlebars" data-template-name="bar_table">
+    <span class="bar-cell" {{bind-attr style="view.histogramStyle"}}>
+    </span>
+  </script>
+  
+  <script type="text/x-handlebars" data-template-name="application">
+  <div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>Bar</small></h1>
+  
+  <div class="row">
+  <div class="col-md-12">
+  <div class="example-container">
+  <div class="ember-table-example-container" style="height:400px;">
+{{table-component
+  hasHeader=true
+  hasFooter=false
+  rowHeight=30
+  columnsBinding="columns"
+  contentBinding="content"
+}}
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </script>
+  
+        </body>
+        
+</html>
