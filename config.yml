@@ -3,6 +3,9 @@ addepartable:
     - css/ember-table.css
   jshead: 
     - js/jquery-1.10.2.js
+    - js/jquery-us-1.10.1.custom.min.js
+    - js/jquery.mousewheel.js
+    - js/antiscroll.js
     - js/handlebars-1.1.2.js
     - js/ember-1.4.0.js
     - js/ember-table.js
