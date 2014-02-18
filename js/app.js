@@ -18,7 +18,7 @@ App.ApplicationController = Ember.Controller.extend({
       textAlign: 'text-align-left',
       headerCellName: 'Date',
       getCellContent: function(row) {
-        return row['date'].toDateString();
+        return new Date(row['date']).toDateString();
       }
     });
     openColumn = Ember.Table.ColumnDefinition.create({
