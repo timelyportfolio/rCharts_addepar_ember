@@ -23,7 +23,7 @@ rChartsAddepar <- setRefClass("rChartsAddepar",
                     chartId = params$dom, script = .self$html(params$dom), 
                     CODE = srccode, lib = LIB$name, tObj = tObj, container = container), 
                     partials = list(chartDiv = templates$chartDiv, afterScript = "<script></script>"))
-        html = gsub(
+        html = toObj(gsub(
           x = html,
           pattern  = "</body>",
           replacement = paste0(
@@ -32,7 +32,7 @@ rChartsAddepar <- setRefClass("rChartsAddepar",
             </body>
             '
           )
-        )
+        ))
   })
 )
 aTable <- rChartsAddepar$new()
@@ -49,8 +49,8 @@ aTable$setTemplate(
 
             <div class="row">
               <div class="col-md-12">
-                <div class="example-container" style="height:500px;">
-                  <div class="ember-table-example-container">
+                <div class="example-container">
+                  <div class="ember-table-example-container" style="height:500px;">
                     {{table-component
                       hasFooter=false
                       columnsBinding="columns"
@@ -76,5 +76,12 @@ colnames(sp500.df) <- c(
   "Adj. Close"
 )
 aTable$params$data = sp500.df
+aTable$params$columns = list(
+  Date = list(
+    textAlign = 'text-align-left',
+    getCellContent = 
+      "#! function(row) {return new Date(row['Date'] * 24 * 60 * 60 * 1000).toDateString();}!#"
+  )
+)
 
 aTable

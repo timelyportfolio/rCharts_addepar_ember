@@ -29,7 +29,8 @@
           App.ApplicationController = Ember.Controller.extend({
             columns: Ember.computed(function() {
               var tablecolumns = [];
-              Object.keys(data[0]).map(function(key) {
+              //if no column settings from rCharts just do the bare minimum for each key
+              Object.keys(data[0]).map(function(key,numkey) {
                 tablecolumns.push(Ember.Table.ColumnDefinition.create({
                   headerCellName: key,
                   getCellContent: function(row) {
@@ -37,6 +38,11 @@
                     }
                   })
                 )
+                if (params.columns[key]) {
+                  Object.keys(params.columns[key]).forEach(function(colparam){
+                    tablecolumns[numkey][colparam] = params.columns[key][colparam]
+                  })
+                }
               })
               return tablecolumns;
             }),
