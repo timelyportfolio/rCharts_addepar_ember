@@ -2,6 +2,19 @@
           // spot to get all the rCharts parameters
           var params = {{{ chartParams }}}
 
+          // transform data into array of objects from object of arrays
+          // easy to do with d3, lodash, etc.
+          // but use just javascript for now
+
+          var data= [];
+          params.data[Object.keys(params.data)[0]].forEach(function(d,i){
+            var tempdata = {};
+            Object.keys(params.data).map(function(key) {
+              tempdata[key] = params.data[key][i];
+            })
+            data.push(tempdata);
+          });
+
           // copied most from Addepar
           // this was probably most helpful
           // http://jsbin.com/eVOgUrE/3/edit as one simpler example than the addepar maze
@@ -15,47 +28,22 @@
 
           App.ApplicationController = Ember.Controller.extend({
             columns: Ember.computed(function() {
-              var closeColumn, dateColumn, highColumn, lowColumn, openColumn;
-              dateColumn = Ember.Table.ColumnDefinition.create({
-                columnWidth: 150,
-                textAlign: 'text-align-left',
-                headerCellName: 'Date',
-                getCellContent: function(row) {
-                  return new Date(row['date']).toDateString();
-                }
-              });
-              openColumn = Ember.Table.ColumnDefinition.create({
-                columnWidth: 100,
-                headerCellName: 'Open',
-                getCellContent: function(row) {
-                  return row['open'].toFixed(2);
-                }
-              });
-              highColumn = Ember.Table.ColumnDefinition.create({
-                columnWidth: 100,
-                headerCellName: 'High',
-                getCellContent: function(row) {
-                  return row['high'].toFixed(2);
-                }
-              });
-              lowColumn = Ember.Table.ColumnDefinition.create({
-                columnWidth: 100,
-                headerCellName: 'Low',
-                getCellContent: function(row) {
-                  return row['low'].toFixed(2);
-                }
-              });
-              closeColumn = Ember.Table.ColumnDefinition.create({
-                columnWidth: 100,
-                headerCellName: 'Close',
-                getCellContent: function(row) {
-                  return row['close'].toFixed(2);
-                }
-              });
-              return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
+              var tablecolumns = [];
+              Object.keys(data[0]).map(function(key) {
+                tablecolumns.push(Ember.Table.ColumnDefinition.create({
+                  headerCellName: key,
+                  getCellContent: function(row) {
+                      return row[key];
+                    }
+                  })
+                )
+              })
+              return tablecolumns;
             }),
-            content: null//params.data
-          });
+            content: data
+});
+
+
 
         </script>
 

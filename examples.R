@@ -40,7 +40,7 @@ aTable$setLib(
   "."
   #"http://timelyportfolio.github.io/rCharts_addepar_ember"
 )
-aTable$templates$page = "rChartAddepar.html"
+aTable$templates$page = "./layouts/rChartAddepar.html"
 aTable$setTemplate(
   afterScript='
         <script type="text/x-handlebars" data-template-name="application">
@@ -49,7 +49,7 @@ aTable$setTemplate(
 
             <div class="row">
               <div class="col-md-12">
-                <div class="example-container">
+                <div class="example-container" style="height:500px;">
                   <div class="ember-table-example-container">
                     {{table-component
                       hasFooter=false
@@ -66,6 +66,15 @@ aTable$setTemplate(
 )
 sp500 = getSymbols("^GSPC", auto.assign = F)
 sp500.df = data.frame(index(sp500),sp500)
+colnames(sp500.df) <- c(
+  "Date",
+  "Open",
+  "High",
+  "Low",
+  "Close",
+  "Volume",
+  "Adj. Close"
+)
 aTable$params$data = sp500.df
 
 aTable
