@@ -1,14 +1,15 @@
 // copied most from Addepar
+// this was probably most helpful
+// http://jsbin.com/eVOgUrE/3/edit as one simpler example than the addepar maze
 
 
-  window.App = Ember.Application.create({
-    customEvents: {
-      blur: 'blur'
-    }
-  });
+window.App = Ember.Application.create({
+  customEvents: {
+    blur: 'blur'
+  }
+});
 
-
-App.EmberTableSimpleController = Ember.Controller.extend({
+App.ApplicationController = Ember.Controller.extend({
   numRows: 100,
   columns: Ember.computed(function() {
     var closeColumn, dateColumn, highColumn, lowColumn, openColumn;
